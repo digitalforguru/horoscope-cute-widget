@@ -50,7 +50,7 @@
     transform: scale(1.15);
   }
 
-  /* text */
+  /* details */
   #details {
     overflow: hidden;
     transition: max-height .35s ease;
@@ -85,7 +85,6 @@
     text-transform: lowercase;
   }
 
-  /* themes */
   .themes {
     display: flex;
     gap: 6px;
@@ -146,24 +145,25 @@
 </div>
 
 <script>
-// ------------------- HOROSCOPE LOADING -------------------
+
+// -------------- HOROSCOPE FETCH FUNCTION ----------------
 async function loadHoroscope(sign) {
   const text = document.getElementById("horoscopeText");
   const dateLabel = document.getElementById("dateLabel");
+  const headerSign = document.getElementById("headerSign");
 
   text.innerHTML = "checking the stars…";
+  headerSign.textContent = sign;
 
   try {
     const res = await fetch(
-      https://api.api-ninjas.com/v1/horoscope?zodiac=${sign},
-      {
-        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
-      }
+      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}`,
+      { headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" } }
     );
 
     const data = await res.json();
 
-    text.innerHTML = <strong>${sign}</strong>${data.horoscope};
+    text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
     dateLabel.textContent = new Date().toLocaleDateString();
 
   } catch (err) {
@@ -172,20 +172,12 @@ async function loadHoroscope(sign) {
   }
 }
 
-const signSelect = document.getElementById("signSelect");
-const widget = document.getElementById("widget");
-
-// Sign change
-signSelect.addEventListener("change", () => {
-  loadHoroscope(signSelect.value);
-});
 // ------------------- CONTROLS -------------------
 const signSelect = document.getElementById("signSelect");
 const widget = document.getElementById("widget");
 const details = document.getElementById("details");
 const toggleBtn = document.getElementById("toggleBtn");
 
-// sign change
 signSelect.addEventListener("change", () => loadHoroscope(signSelect.value));
 
 // theme picker
@@ -211,6 +203,7 @@ toggleBtn.addEventListener("click", () => {
 
 // initial load
 loadHoroscope(signSelect.value);
+
 </script>
 
 </body>
