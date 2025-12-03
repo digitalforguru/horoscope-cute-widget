@@ -10,16 +10,51 @@
     display: flex;
     justify-content: center;
     padding: 40px;
-    background: #f8f8f8;
+    background: #f5f5f7;
   }
 
   .widget {
     width: 260px;
-    padding: 20px;
+    padding: 22px;
     border-radius: 22px;
     background: #FFD6E0;
-    box-shadow: 0px 8px 23px rgba(0,0,0,0.1);
-    transition: background 0.3s ease;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  /* header */
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .top strong {
+    font-size: 18px;
+    text-transform: lowercase;
+    letter-spacing: -0.3px;
+  }
+
+  .toggleBtn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: .6;
+    transition: .2s;
+  }
+
+  .toggleBtn:hover {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  /* text */
+  #details {
+    overflow: hidden;
+    transition: max-height .35s ease;
+    max-height: 300px;
   }
 
   #horoscopeText {
@@ -27,32 +62,30 @@
     line-height: 1.45;
   }
 
-  #horoscopeText strong {
-    text-transform: lowercase;
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
   #dateLabel {
     font-size: 11px;
-    margin-top: 10px;
-    opacity: 0.6;
+    opacity: 0.55;
+    margin-top: 8px;
     text-align: right;
   }
 
+  /* controls */
   .controls {
-    margin-top: 15px;
+    margin-top: 16px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   #signSelect {
     padding: 6px 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    border-radius: 12px;
+    border: 1px solid #d1d1d6;
+    background: white;
+    text-transform: lowercase;
   }
 
+  /* themes */
   .themes {
     display: flex;
     gap: 6px;
@@ -64,20 +97,28 @@
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform .2s;
   }
 
   .themes button:hover {
     transform: scale(1.2);
   }
 </style>
-
 </head>
+
 <body>
 
 <div class="widget" id="widget">
-  <div id="horoscopeText">loading…</div>
-  <div id="dateLabel"></div>
+  
+  <div class="top">
+    <strong id="headerSign">aries</strong>
+    <button class="toggleBtn" id="toggleBtn">⌄</button>
+  </div>
+
+  <div id="details">
+    <div id="horoscopeText">loading…</div>
+    <div id="dateLabel"></div>
+  </div>
 
   <div class="controls">
     <select id="signSelect">
@@ -105,54 +146,69 @@
 </div>
 
 <script>
+// ------------------- HOROSCOPE LOADING -------------------
 async function loadHoroscope(sign) {
   const text = document.getElementById("horoscopeText");
   const dateLabel = document.getElementById("dateLabel");
+  const headerSign = document.getElementById("headerSign");
 
   text.innerHTML = "checking the stars…";
+  headerSign.textContent = sign;
 
   try {
     const res = await fetch(
-      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}`,
-      {
-        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
-      }
+      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}&date=today`,
+      { headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" } }
     );
 
     const data = await res.json();
 
-    text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
+    if (!data.horoscope) {
+      text.innerHTML = "no stars today ✨";
+      return;
+    }
+
+    text.innerHTML =
+      `<strong style="text-transform: lowercase;">${sign}</strong> ${data.horoscope}`;
+
     dateLabel.textContent = new Date().toLocaleDateString();
 
   } catch (err) {
-    console.log(err);
     text.innerHTML = "couldn't load your horoscope ✨";
   }
 }
 
+// ------------------- CONTROLS -------------------
 const signSelect = document.getElementById("signSelect");
 const widget = document.getElementById("widget");
+const details = document.getElementById("details");
+const toggleBtn = document.getElementById("toggleBtn");
 
-// Sign change
-signSelect.addEventListener("change", () => {
-  loadHoroscope(signSelect.value);
-});
+// sign change
+signSelect.addEventListener("change", () => loadHoroscope(signSelect.value));
 
-// Theme buttons
+// theme picker
 document.querySelectorAll(".themes button").forEach(btn => {
   btn.style.background = btn.dataset.color;
-
   btn.addEventListener("click", () => {
     widget.style.background = btn.dataset.color;
     localStorage.setItem("horoscopeTheme", btn.dataset.color);
   });
 });
 
-// Load saved theme
-const savedTheme = localStorage.getItem("horoscopeTheme");
-if (savedTheme) widget.style.background = savedTheme;
+// saved theme
+const saved = localStorage.getItem("horoscopeTheme");
+if (saved) widget.style.background = saved;
 
-// Load initial horoscope
+// hide/show
+let open = true;
+toggleBtn.addEventListener("click", () => {
+  open = !open;
+  details.style.maxHeight = open ? "300px" : "0px";
+  toggleBtn.textContent = open ? "⌄" : "›";
+});
+
+// initial load
 loadHoroscope(signSelect.value);
 </script>
 
