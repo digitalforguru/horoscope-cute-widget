@@ -150,34 +150,35 @@
 async function loadHoroscope(sign) {
   const text = document.getElementById("horoscopeText");
   const dateLabel = document.getElementById("dateLabel");
-  const headerSign = document.getElementById("headerSign");
 
   text.innerHTML = "checking the stars…";
-  headerSign.textContent = sign;
 
   try {
     const res = await fetch(
-      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}&date=today`,
-      { headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" } }
+      https://api.api-ninjas.com/v1/horoscope?zodiac=${sign},
+      {
+        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
+      }
     );
 
     const data = await res.json();
 
-    if (!data.horoscope) {
-      text.innerHTML = "no stars today ✨";
-      return;
-    }
-
-    text.innerHTML =
-      `<strong style="text-transform: lowercase;">${sign}</strong> ${data.horoscope}`;
-
+    text.innerHTML = <strong>${sign}</strong>${data.horoscope};
     dateLabel.textContent = new Date().toLocaleDateString();
 
   } catch (err) {
+    console.log(err);
     text.innerHTML = "couldn't load your horoscope ✨";
   }
 }
 
+const signSelect = document.getElementById("signSelect");
+const widget = document.getElementById("widget");
+
+// Sign change
+signSelect.addEventListener("change", () => {
+  loadHoroscope(signSelect.value);
+});
 // ------------------- CONTROLS -------------------
 const signSelect = document.getElementById("signSelect");
 const widget = document.getElementById("widget");
