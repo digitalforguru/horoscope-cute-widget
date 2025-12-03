@@ -15,24 +15,27 @@ signs.forEach(sign => {
   signSelect.appendChild(opt);
 });
 
-async function loadHoroscope(sign) {
+async function loadHoroscope(sign = "aries") {
   horoscopeText.textContent = "checking the stars…";
 
   try {
-    const res = await fetch(`https://horoscopefree.com/api/v1/forecast/${sign}/today`);
+    const res = await fetch(`https://aztro.sameerkumar.website/?sign=${sign}&day=today`, {
+      method: "POST"
+    });
+
     const data = await res.json();
 
-    horoscopeText.textContent = data.horoscope;
-    dateDisplay.textContent = data.date;
-  } catch (error) {
+    horoscopeText.textContent = data.description;
+    dateDisplay.textContent = data.current_date;
+
+  } catch (err) {
     horoscopeText.textContent = "couldn't load your horoscope ✨";
   }
 }
 
-// Load default
+// default load
 loadHoroscope("aries");
 
-// Listen for user changes
 signSelect.addEventListener("change", () => {
   loadHoroscope(signSelect.value);
 });
