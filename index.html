@@ -17,11 +17,23 @@
     width: 260px;
     padding: 22px;
     border-radius: 22px;
-    background: #FFD6E0;
+    background: #ffd6e0;
     box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
     position: relative;
     overflow: hidden;
     transition: background 0.3s ease;
+  }
+
+  .sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: url('https://i.pinimg.com/originals/69/e2/7c/69e27c177766a3cb153b37682b22186c.gif') center/cover no-repeat;
+    opacity: 1;
+    z-index: 1;
   }
 
   /* header */
@@ -30,6 +42,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 14px;
+    z-index: 2;
+    position: relative;
   }
 
   .signWrap {
@@ -82,6 +96,8 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    z-index: 2;
+    position: relative;
   }
 
   .zodiac-buttons.show {
@@ -114,18 +130,20 @@
     transition: max-height .35s ease;
     max-height: 300px;
     position: relative;
+    z-index: 2;
   }
 
   #horoscopeText {
     font-size: 14px;
     line-height: 1.45;
+    text-transform: lowercase;
   }
 
   #horoscopeText strong {
     display: block;
     margin-bottom: 6px;
-    text-transform: lowercase;
     font-weight: 600;
+    text-transform: lowercase;
   }
 
   #dateLabel {
@@ -133,6 +151,7 @@
     opacity: 0.55;
     margin-top: 8px;
     text-align: right;
+    text-transform: lowercase;
   }
 
   /* mini magical area when collapsed */
@@ -148,6 +167,9 @@
     border-radius: 16px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.08);
     animation: sparkle 2s infinite alternate;
+    z-index: 2;
+    position: relative;
+    text-transform: lowercase;
   }
 
   #miniMagic span {
@@ -167,6 +189,8 @@
     display: flex;
     gap: 6px;
     justify-content: center;
+    z-index: 2;
+    position: relative;
   }
 
   .themes button {
@@ -182,17 +206,6 @@
     transform: scale(1.2);
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
-  .sparkles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* so it doesn’t block clicks */
-  background: url('https://i.pinimg.com/originals/69/e2/7c/69e27c177766a3cb153b37682b22186c.gif') center/cover no-repeat;
-  opacity: 1; /* adjust sparkle intensity */
-  z-index: 1;
-}
 </style>
 </head>
 
@@ -301,33 +314,33 @@ async function loadHoroscope(sign) {
 
 // ------------------- MINI MAGIC -------------------
 const birthstones = {
-  aries: { name: "Diamond", color: "#b9f2ff" },
-  taurus: { name: "Emerald", color: "#50c878" },
-  gemini: { name: "Agate", color: "#f08080" },
-  cancer: { name: "Pearl", color: "#fefae0" },
-  leo: { name: "Ruby", color: "#e0115f" },
-  virgo: { name: "Sapphire", color: "#0f52ba" },
-  libra: { name: "Opal", color: "#a8c3bc" },
-  scorpio: { name: "Topaz", color: "#ffc87c" },
-  sagittarius: { name: "Turquoise", color: "#40e0d0" },
-  capricorn: { name: "Garnet", color: "#733635" },
-  aquarius: { name: "Amethyst", color: "#9966cc" },
-  pisces: { name: "Aquamarine", color: "#7fffd4" }
+  aries: { name: "diamond", color: "#b9f2ff" },
+  taurus: { name: "emerald", color: "#50c878" },
+  gemini: { name: "agate", color: "#f08080" },
+  cancer: { name: "pearl", color: "#fefae0" },
+  leo: { name: "ruby", color: "#e0115f" },
+  virgo: { name: "sapphire", color: "#0f52ba" },
+  libra: { name: "opal", color: "#a8c3bc" },
+  scorpio: { name: "topaz", color: "#ffc87c" },
+  sagittarius: { name: "turquoise", color: "#40e0d0" },
+  capricorn: { name: "garnet", color: "#733635" },
+  aquarius: { name: "amethyst", color: "#9966cc" },
+  pisces: { name: "aquamarine", color: "#7fffd4" }
 };
   
 const quotes = [
-  "Believe in magic ✨",
-  "Today is your day 🌿",
-  "Smile at the little things 🌸",
-  "The stars have your back ⭐️",
-  "Flow like a gentle river 🌊"
+  "believe in magic ✨",
+  "today is your day 🌿",
+  "smile at the little things 🌸",
+  "the stars have your back ⭐️",
+  "flow like a gentle river 🌊"
 ];
 
 function generateMiniMagic(sign) {
-  luckyNumber.textContent = `Number of the Day: ${Math.floor(Math.random() * 99 + 1)}`;
+  luckyNumber.textContent = `number of the day: ${Math.floor(Math.random() * 99 + 1)}`;
 
   const stone = birthstones[sign.toLowerCase()];
-  birthstone.innerHTML = `Birthstone: <span style="
+  birthstone.innerHTML = `birthstone: <span style="
     display:inline-block;
     width:10px;
     height:10px;
@@ -337,8 +350,9 @@ function generateMiniMagic(sign) {
     vertical-align:middle;
   "></span>${stone.name}`;
 
-  dailyQuote.textContent = `Quote: ${quotes[Math.floor(Math.random() * quotes.length)]}`;
+  dailyQuote.textContent = `quote: ${quotes[Math.floor(Math.random() * quotes.length)]}`;
 }
+
 // ------------------- ZODIAC BUTTON LOGIC -------------------
 const savedSign = localStorage.getItem("horoscopeSign") || "aries";
 zodiacBtns.forEach(btn => {
