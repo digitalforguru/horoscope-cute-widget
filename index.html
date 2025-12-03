@@ -19,7 +19,7 @@
     border-radius: 22px;
     background: #FFD6E0;
     box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: background 0.3s ease;
   }
 
   /* header */
@@ -30,10 +30,25 @@
     margin-bottom: 14px;
   }
 
-  .top strong {
+  .signWrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #headerSign {
     font-size: 18px;
     text-transform: lowercase;
     letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+
+  #signSelect {
+    padding: 5px 9px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 12px;
+    text-transform: lowercase;
   }
 
   .toggleBtn {
@@ -62,6 +77,13 @@
     line-height: 1.45;
   }
 
+  #horoscopeText strong {
+    display: block;
+    margin-bottom: 6px;
+    text-transform: lowercase;
+    font-weight: 600;
+  }
+
   #dateLabel {
     font-size: 11px;
     opacity: 0.55;
@@ -69,25 +91,12 @@
     text-align: right;
   }
 
-  /* controls */
-  .controls {
+  /* themes */
+  .themes {
     margin-top: 16px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  #signSelect {
-    padding: 6px 10px;
-    border-radius: 12px;
-    border: 1px solid #d1d1d6;
-    background: white;
-    text-transform: lowercase;
-  }
-
-  .themes {
-    display: flex;
     gap: 6px;
+    justify-content: center;
   }
 
   .themes button {
@@ -109,59 +118,68 @@
 
 <div class="widget" id="widget">
   
+  <!-- HEADER + sign selector -->
   <div class="top">
-    <strong id="headerSign">aries</strong>
+    <div class="signWrap">
+      <strong id="headerSign">aries</strong>
+      <select id="signSelect">
+        <option>aries</option>
+        <option>taurus</option>
+        <option>gemini</option>
+        <option>cancer</option>
+        <option>leo</option>
+        <option>virgo</option>
+        <option>libra</option>
+        <option>scorpio</option>
+        <option>sagittarius</option>
+        <option>capricorn</option>
+        <option>aquarius</option>
+        <option>pisces</option>
+      </select>
+    </div>
+
     <button class="toggleBtn" id="toggleBtn">⌄</button>
   </div>
 
+  <!-- details -->
   <div id="details">
     <div id="horoscopeText">loading…</div>
     <div id="dateLabel"></div>
   </div>
 
-  <div class="controls">
-    <select id="signSelect">
-      <option value="aries">aries</option>
-      <option value="taurus">taurus</option>
-      <option value="gemini">gemini</option>
-      <option value="cancer">cancer</option>
-      <option value="leo">leo</option>
-      <option value="virgo">virgo</option>
-      <option value="libra">libra</option>
-      <option value="scorpio">scorpio</option>
-      <option value="sagittarius">sagittarius</option>
-      <option value="capricorn">capricorn</option>
-      <option value="aquarius">aquarius</option>
-      <option value="pisces">pisces</option>
-    </select>
-
-    <div class="themes">
-      <button data-color="#FFD6E0"></button>
-      <button data-color="#D6E8FF"></button>
-      <button data-color="#E7FFD6"></button>
-      <button data-color="#FFEAD6"></button>
-    </div>
+  <!-- themes -->
+  <div class="themes">
+    <button data-color="#FFD6E0"></button>
+    <button data-color="#D6E8FF"></button>
+    <button data-color="#E7FFD6"></button>
+    <button data-color="#FFEAD6"></button>
   </div>
+
 </div>
 
 <script>
-
-// -------------- HOROSCOPE FETCH FUNCTION ----------------
 async function loadHoroscope(sign) {
   const text = document.getElementById("horoscopeText");
   const dateLabel = document.getElementById("dateLabel");
   const headerSign = document.getElementById("headerSign");
 
   text.innerHTML = "checking the stars…";
-  headerSign.textContent = sign;
+  headerSign.textContent = sign.toLowerCase();
 
   try {
     const res = await fetch(
       `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}`,
-      { headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" } }
+      {
+        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
+      }
     );
 
     const data = await res.json();
+
+    if (!data.horoscope) {
+      text.innerHTML = "no stars today ✨";
+      return;
+    }
 
     text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
     dateLabel.textContent = new Date().toLocaleDateString();
@@ -172,38 +190,39 @@ async function loadHoroscope(sign) {
   }
 }
 
-// ------------------- CONTROLS -------------------
+// ELEMENTS
 const signSelect = document.getElementById("signSelect");
 const widget = document.getElementById("widget");
 const details = document.getElementById("details");
 const toggleBtn = document.getElementById("toggleBtn");
 
+// SIGN CHANGE
 signSelect.addEventListener("change", () => loadHoroscope(signSelect.value));
 
-// theme picker
+// THEMES
 document.querySelectorAll(".themes button").forEach(btn => {
   btn.style.background = btn.dataset.color;
+
   btn.addEventListener("click", () => {
     widget.style.background = btn.dataset.color;
     localStorage.setItem("horoscopeTheme", btn.dataset.color);
   });
 });
 
-// saved theme
+// LOAD SAVED THEME
 const saved = localStorage.getItem("horoscopeTheme");
 if (saved) widget.style.background = saved;
 
-// hide/show
+// HIDE / SHOW DETAILS
 let open = true;
 toggleBtn.addEventListener("click", () => {
   open = !open;
-  details.style.maxHeight = open ? "300px" : "0px";
+  details.style.maxHeight = open ? "300px" : "0";
   toggleBtn.textContent = open ? "⌄" : "›";
 });
 
-// initial load
+// INITIAL LOAD
 loadHoroscope(signSelect.value);
-
 </script>
 
 </body>
