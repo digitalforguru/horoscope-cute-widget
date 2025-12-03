@@ -6,17 +6,23 @@
   <title>Horoscope Widget</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <div class="widget-container">
-    <div class="top-accent"></div>
+  <div class="widget">
+    <div class="top-accent" id="accent"></div>
 
-    <div class="header-row">
+    <div class="row">
       <select id="signSelect"></select>
-      <span id="dateDisplay"></span>
+      <span id="dateLabel"></span>
     </div>
 
     <p id="horoscopeText">loading your stars…</p>
+  </div>
+
+  <div class="themes">
+    <button data-theme="#007aff"></button>
+    <button data-theme="#ff6b81"></button>
+    <button data-theme="#9b59b6"></button>
+    <button data-theme="#27ae60"></button>
   </div>
 
   <script src="script.js"></script>
