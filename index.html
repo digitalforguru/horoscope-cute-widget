@@ -111,6 +111,31 @@
   .themes button:hover {
     transform: scale(1.2);
   }
+  .zodiac-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.zodiac-buttons button {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+
+.zodiac-buttons button:hover {
+  transform: scale(1.08);
+}
+
+.zodiac-buttons button.active {
+  background: rgba(0,0,0,0.15); 
+  font-weight: 600;
+}
 </style>
 </head>
 
@@ -122,25 +147,25 @@
   <div class="top">
     <div class="signWrap">
       <strong id="headerSign">aries</strong>
-      <select id="signSelect">
-        <option>aries</option>
-        <option>taurus</option>
-        <option>gemini</option>
-        <option>cancer</option>
-        <option>leo</option>
-        <option>virgo</option>
-        <option>libra</option>
-        <option>scorpio</option>
-        <option>sagittarius</option>
-        <option>capricorn</option>
-        <option>aquarius</option>
-        <option>pisces</option>
-      </select>
     </div>
 
     <button class="toggleBtn" id="toggleBtn">⌄</button>
   </div>
-
+  
+<div class="zodiac-buttons">
+  <button data-sign="aries">♈︎</button>
+  <button data-sign="taurus">♉︎</button>
+  <button data-sign="gemini">♊︎</button>
+  <button data-sign="cancer">♋︎</button>
+  <button data-sign="leo">♌︎</button>
+  <button data-sign="virgo">♍︎</button>
+  <button data-sign="libra">♎︎</button>
+  <button data-sign="scorpio">♏︎</button>
+  <button data-sign="sagittarius">♐︎</button>
+  <button data-sign="capricorn">♑︎</button>
+  <button data-sign="aquarius">♒︎</button>
+  <button data-sign="pisces">♓︎</button>
+</div>
   <!-- details -->
   <div id="details">
     <div id="horoscopeText">loading…</div>
@@ -158,71 +183,35 @@
 </div>
 
 <script>
-async function loadHoroscope(sign) {
-  const text = document.getElementById("horoscopeText");
-  const dateLabel = document.getElementById("dateLabel");
-  const headerSign = document.getElementById("headerSign");
+// zodiac buttons
+const zodiacBtns = document.querySelectorAll(".zodiac-buttons button");
+const headerSign = document.getElementById("headerSign");
 
-  text.innerHTML = "checking the stars…";
-  headerSign.textContent = sign.toLowerCase();
+// load saved sign
+const savedSign = localStorage.getItem("horoscopeSign") || "aries";
 
-  try {
-    const res = await fetch(
-      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}`,
-      {
-        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
-      }
-    );
+// highlight saved button
+zodiacBtns.forEach(btn => {
+  if (btn.dataset.sign === savedSign) btn.classList.add("active");
+});
 
-    const data = await res.json();
-
-    if (!data.horoscope) {
-      text.innerHTML = "no stars today ✨";
-      return;
-    }
-
-    text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
-    dateLabel.textContent = new Date().toLocaleDateString();
-
-  } catch (err) {
-    console.log(err);
-    text.innerHTML = "couldn't load your horoscope ✨";
-  }
-}
-
-// ELEMENTS
-const signSelect = document.getElementById("signSelect");
-const widget = document.getElementById("widget");
-const details = document.getElementById("details");
-const toggleBtn = document.getElementById("toggleBtn");
-
-// SIGN CHANGE
-signSelect.addEventListener("change", () => loadHoroscope(signSelect.value));
-
-// THEMES
-document.querySelectorAll(".themes button").forEach(btn => {
-  btn.style.background = btn.dataset.color;
-
+// click interaction
+zodiacBtns.forEach(btn => {
   btn.addEventListener("click", () => {
-    widget.style.background = btn.dataset.color;
-    localStorage.setItem("horoscopeTheme", btn.dataset.color);
+    zodiacBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const sign = btn.dataset.sign;
+    headerSign.textContent = sign;
+    localStorage.setItem("horoscopeSign", sign);
+
+    loadHoroscope(sign);
   });
 });
 
-// LOAD SAVED THEME
-const saved = localStorage.getItem("horoscopeTheme");
-if (saved) widget.style.background = saved;
-
-// HIDE / SHOW DETAILS
-let open = true;
-toggleBtn.addEventListener("click", () => {
-  open = !open;
-  details.style.maxHeight = open ? "300px" : "0";
-  toggleBtn.textContent = open ? "⌄" : "›";
-});
-
-// INITIAL LOAD
-loadHoroscope(signSelect.value);
+// initial load
+headerSign.textContent = savedSign;
+loadHoroscope(savedSign);
 </script>
 
 </body>
