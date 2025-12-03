@@ -4,20 +4,19 @@ const signs = [
   "libra","scorpio","sagittarius","capricorn","aquarius","pisces"
 ];
 
-// API URLs for each sign
 const horoscopeURLs = {
-  aries: "https://api.api-ninjas.com/v1/horoscope?sign=aries",
-  taurus: "https://api.api-ninjas.com/v1/horoscope?sign=taurus",
-  gemini: "https://api.api-ninjas.com/v1/horoscope?sign=gemini",
-  cancer: "https://api.api-ninjas.com/v1/horoscope?sign=cancer",
-  leo: "https://api.api-ninjas.com/v1/horoscope?sign=leo",
-  virgo: "https://api.api-ninjas.com/v1/horoscope?sign=virgo",
-  libra: "https://api.api-ninjas.com/v1/horoscope?sign=libra",
-  scorpio: "https://api.api-ninjas.com/v1/horoscope?sign=scorpio",
-  sagittarius: "https://api.api-ninjas.com/v1/horoscope?sign=sagittarius",
-  capricorn: "https://api.api-ninjas.com/v1/horoscope?sign=capricorn",
-  aquarius: "https://api.api-ninjas.com/v1/horoscope?sign=aquarius",
-  pisces: "https://api.api-ninjas.com/v1/horoscope?sign=pisces"
+  aries: "https://api.api-ninjas.com/v1/horoscope?zodiac=aries",
+  taurus: "https://api.api-ninjas.com/v1/horoscope?zodiac=taurus",
+  gemini: "https://api.api-ninjas.com/v1/horoscope?zodiac=gemini",
+  cancer: "https://api.api-ninjas.com/v1/horoscope?zodiac=cancer",
+  leo: "https://api.api-ninjas.com/v1/horoscope?zodiac=leo",
+  virgo: "https://api.api-ninjas.com/v1/horoscope?zodiac=virgo",
+  libra: "https://api.api-ninjas.com/v1/horoscope?zodiac=libra",
+  scorpio: "https://api.api-ninjas.com/v1/horoscope?zodiac=scorpio",
+  sagittarius: "https://api.api-ninjas.com/v1/horoscope?zodiac=sagittarius",
+  capricorn: "https://api.api-ninjas.com/v1/horoscope?zodiac=capricorn",
+  aquarius: "https://api.api-ninjas.com/v1/horoscope?zodiac=aquarius",
+  pisces: "https://api.api-ninjas.com/v1/horoscope?zodiac=pisces"
 };
 
 // elements
