@@ -1,13 +1,16 @@
+// zodiac signs
 const signs = [
-  "aries", "taurus", "gemini", "cancer", "leo", "virgo",
-  "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"
+  "aries","taurus","gemini","cancer","leo","virgo",
+  "libra","scorpio","sagittarius","capricorn","aquarius","pisces"
 ];
 
+// elements
 const signSelect = document.getElementById("signSelect");
 const horoscopeText = document.getElementById("horoscopeText");
-const dateDisplay = document.getElementById("dateDisplay");
+const accent = document.getElementById("accent");
+const dateLabel = document.getElementById("dateLabel");
 
-// Fill dropdown
+// fill dropdown
 signs.forEach(sign => {
   const opt = document.createElement("option");
   opt.value = sign;
@@ -15,27 +18,48 @@ signs.forEach(sign => {
   signSelect.appendChild(opt);
 });
 
+// load saved sign
+const savedSign = localStorage.getItem("horoscopeSign");
+if (savedSign) signSelect.value = savedSign;
+
+// load horoscope from API Ninjas
 async function loadHoroscope(sign = "aries") {
   horoscopeText.textContent = "checking the stars…";
+  localStorage.setItem("horoscopeSign", sign);
 
   try {
-    const res = await fetch(`https://aztro.sameerkumar.website/?sign=${sign}&day=today`, {
-      method: "POST"
+    const res = await fetch(`https://api.api-ninjas.com/v1/horoscope?sign=${sign}`, {
+      headers: { 'X-Api-Key': 'blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE' }
     });
 
     const data = await res.json();
-
-    horoscopeText.textContent = data.description;
-    dateDisplay.textContent = data.current_date;
+    horoscopeText.textContent = data.horoscope;
+    dateLabel.textContent = new Date().toLocaleDateString();
 
   } catch (err) {
+    console.error(err);
     horoscopeText.textContent = "couldn't load your horoscope ✨";
   }
 }
 
-// default load
-loadHoroscope("aries");
+// theme buttons
+document.querySelectorAll(".themes button").forEach(btn => {
+  btn.style.background = btn.dataset.theme;
+  btn.addEventListener("click", () => {
+    const color = btn.dataset.theme;
+    accent.style.background = color;
+    localStorage.setItem("horoscopeTheme", color);
+  });
+});
 
+// load saved theme
+const savedTheme = localStorage.getItem("horoscopeTheme");
+if (savedTheme) accent.style.background = savedTheme;
+
+// initial load
+loadHoroscope(signSelect.value || "aries");
+
+// update on change
 signSelect.addEventListener("change", () => {
   loadHoroscope(signSelect.value);
 });
