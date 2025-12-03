@@ -289,20 +289,20 @@ async function loadHoroscope(sign) {
 
 // ------------------- MINI MAGIC -------------------
 const birthstones = {
-  aries: "Diamond 💎",
-  taurus: "Emerald 💚",
-  gemini: "Agate 🪨",
-  cancer: "Pearl 🐚",
-  leo: "Ruby ❤️",
-  virgo: "Sapphire 💙",
-  libra: "Opal 🌈",
-  scorpio: "Topaz 💛",
-  sagittarius: "Turquoise 💎",
-  capricorn: "Garnet ❤️",
-  aquarius: "Amethyst 💜",
-  pisces: "Aquamarine 💧"
+  aries: { name: "Diamond", color: "#b9f2ff" },
+  taurus: { name: "Emerald", color: "#50c878" },
+  gemini: { name: "Agate", color: "#f08080" },
+  cancer: { name: "Pearl", color: "#fefae0" },
+  leo: { name: "Ruby", color: "#e0115f" },
+  virgo: { name: "Sapphire", color: "#0f52ba" },
+  libra: { name: "Opal", color: "#a8c3bc" },
+  scorpio: { name: "Topaz", color: "#ffc87c" },
+  sagittarius: { name: "Turquoise", color: "#40e0d0" },
+  capricorn: { name: "Garnet", color: "#733635" },
+  aquarius: { name: "Amethyst", color: "#9966cc" },
+  pisces: { name: "Aquamarine", color: "#7fffd4" }
 };
-
+  
 const quotes = [
   "Believe in magic ✨",
   "Today is your day 🌿",
@@ -313,10 +313,20 @@ const quotes = [
 
 function generateMiniMagic(sign) {
   luckyNumber.textContent = `Lucky Number: ${Math.floor(Math.random() * 99 + 1)}`;
-  birthstone.textContent = `Birthstone: ${birthstones[sign.toLowerCase()]}`;
-  dailyQuote.textContent = `Quote: ${quotes[Math.floor(Math.random()*quotes.length)]}`;
-}
 
+  const stone = birthstones[sign.toLowerCase()];
+  birthstone.innerHTML = `Birthstone: <span style="
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background-color:${stone.color};
+    margin-right:6px;
+    vertical-align:middle;
+  "></span>${stone.name}`;
+
+  dailyQuote.textContent = `Quote: ${quotes[Math.floor(Math.random() * quotes.length)]}`;
+}
 // ------------------- ZODIAC BUTTON LOGIC -------------------
 const savedSign = localStorage.getItem("horoscopeSign") || "aries";
 zodiacBtns.forEach(btn => {
