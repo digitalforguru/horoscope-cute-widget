@@ -42,6 +42,21 @@
     margin-bottom: 4px;
   }
 
+  .leafBtn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: transform .2s, opacity .2s;
+    margin-right: 6px;
+  }
+
+  .leafBtn:hover {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
   .toggleBtn {
     background: none;
     border: none;
@@ -143,12 +158,15 @@
 
 <div class="widget" id="widget">
   
-  <!-- HEADER + toggle -->
+  <!-- HEADER + toggle + leaf -->
   <div class="top">
     <div class="signWrap">
       <strong id="headerSign">aries</strong>
     </div>
-    <button class="toggleBtn" id="toggleBtn">⌄</button>
+    <div style="display:flex; align-items:center;">
+      <button class="leafBtn" id="leafBtn">🍃</button>
+      <button class="toggleBtn" id="toggleBtn">⌄</button>
+    </div>
   </div>
   
   <!-- zodiac buttons dropdown -->
@@ -189,6 +207,7 @@ const widget = document.getElementById("widget");
 const details = document.getElementById("details");
 const toggleBtn = document.getElementById("toggleBtn");
 const headerSign = document.getElementById("headerSign");
+const leafBtn = document.getElementById("leafBtn");
 const zodiacButtons = document.getElementById("zodiacButtons");
 const zodiacBtns = document.querySelectorAll(".zodiac-buttons button");
 
@@ -225,8 +244,6 @@ async function loadHoroscope(sign) {
 }
 
 // ------------------- ZODIAC BUTTON LOGIC -------------------
-
-// Load saved sign
 const savedSign = localStorage.getItem("horoscopeSign") || "aries";
 
 // Highlight saved button
@@ -271,7 +288,7 @@ toggleBtn.addEventListener("click", () => {
 
 // ------------------- ZODIAC DROPDOWN TOGGLE -------------------
 let zodiacOpen = false;
-headerSign.addEventListener("click", () => {
+leafBtn.addEventListener("click", () => {
   zodiacOpen = !zodiacOpen;
   zodiacButtons.classList.toggle("show", zodiacOpen);
 });
