@@ -1,132 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>horoscope widget</title>
+<meta charset="UTF-8">
+<title>Horoscope Widget</title>
 
 <style>
-/* ========== BASE ========== */
-body {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", system-ui, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    background: #f8f8f8;
+  }
 
-/* ========== WIDGET CARD ========== */
-#horoscope-widget {
-  width: 260px;
-  padding: 18px;
-  border-radius: 22px;
-  background: var(--accent, #ffd6e0);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  color: #111;
-  transition: background 0.3s ease;
-}
+  .widget {
+    width: 260px;
+    padding: 20px;
+    border-radius: 22px;
+    background: #FFD6E0;
+    box-shadow: 0px 8px 23px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+  }
 
-/* horoscope text */
-#horoscopeText {
-  font-size: 14px;
-  line-height: 1.45;
-  text-transform: lowercase;
-  margin-top: 4px;
-}
+  #horoscopeText {
+    font-size: 14px;
+    line-height: 1.45;
+  }
 
-#horoscopeText strong {
-  font-weight: 600;
-  font-size: 15px;
-  display: block;
-  margin-bottom: 6px;
-}
+  #horoscopeText strong {
+    text-transform: lowercase;
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
 
-/* date label */
-#dateLabel {
-  font-size: 10px;
-  color: rgba(0,0,0,0.6);
-  margin-top: 12px;
-  text-align: right;
-  text-transform: lowercase;
-}
+  #dateLabel {
+    font-size: 11px;
+    margin-top: 10px;
+    opacity: 0.6;
+    text-align: right;
+  }
 
-/* ========== CONTROLS SECTION (outside card) ========== */
-.controls {
-  margin-top: 16px;
-  display: flex;
-  width: 260px;
-  justify-content: space-between;
-  align-items: center;
-}
+  .controls {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
 
-/* dropdown */
-#signSelect {
-  padding: 6px 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-family: inherit;
-  text-transform: lowercase;
-  background: #fff;
-}
+  #signSelect {
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
 
-/* ========== THEME DOTS ========== */
-.themes {
-  display: flex;
-  gap: 6px;
-}
+  .themes {
+    display: flex;
+    gap: 6px;
+  }
 
-.themes button {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
+  .themes button {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
 
-.themes button:hover {
-  transform: scale(1.18);
-}
+  .themes button:hover {
+    transform: scale(1.2);
+  }
 </style>
-</head>
 
+</head>
 <body>
 
-<!-- WIDGET -->
-<div id="horoscope-widget">
+<div class="widget" id="widget">
   <div id="horoscopeText">loading…</div>
   <div id="dateLabel"></div>
-</div>
 
-<!-- CONTROLS -->
-<div class="controls">
-  <select id="signSelect">
-    <option value="aries">aries</option>
-    <option value="taurus">taurus</option>
-    <option value="gemini">gemini</option>
-    <option value="cancer">cancer</option>
-    <option value="leo">leo</option>
-    <option value="virgo">virgo</option>
-    <option value="libra">libra</option>
-    <option value="scorpio">scorpio</option>
-    <option value="sagittarius">sagittarius</option>
-    <option value="capricorn">capricorn</option>
-    <option value="aquarius">aquarius</option>
-    <option value="pisces">pisces</option>
-  </select>
+  <div class="controls">
+    <select id="signSelect">
+      <option value="aries">aries</option>
+      <option value="taurus">taurus</option>
+      <option value="gemini">gemini</option>
+      <option value="cancer">cancer</option>
+      <option value="leo">leo</option>
+      <option value="virgo">virgo</option>
+      <option value="libra">libra</option>
+      <option value="scorpio">scorpio</option>
+      <option value="sagittarius">sagittarius</option>
+      <option value="capricorn">capricorn</option>
+      <option value="aquarius">aquarius</option>
+      <option value="pisces">pisces</option>
+    </select>
 
-  <div class="themes">
-    <button data-color="#FFD6E0" style="background:#FFD6E0"></button>
-    <button data-color="#FDECC8" style="background:#FDECC8"></button>
-    <button data-color="#D8F5FF" style="background:#D8F5FF"></button>
-    <button data-color="#E8E8FF" style="background:#E8E8FF"></button>
-    <button data-color="#F7DFFF" style="background:#F7DFFF"></button>
+    <div class="themes">
+      <button data-color="#FFD6E0"></button>
+      <button data-color="#D6E8FF"></button>
+      <button data-color="#E7FFD6"></button>
+      <button data-color="#FFEAD6"></button>
+    </div>
   </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+async function loadHoroscope(sign) {
+  const text = document.getElementById("horoscopeText");
+  const dateLabel = document.getElementById("dateLabel");
+
+  text.innerHTML = "checking the stars…";
+
+  try {
+    const res = await fetch(
+      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}`,
+      {
+        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
+      }
+    );
+
+    const data = await res.json();
+
+    text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
+    dateLabel.textContent = new Date().toLocaleDateString();
+
+  } catch (err) {
+    console.log(err);
+    text.innerHTML = "couldn't load your horoscope ✨";
+  }
+}
+
+const signSelect = document.getElementById("signSelect");
+const widget = document.getElementById("widget");
+
+// Sign change
+signSelect.addEventListener("change", () => {
+  loadHoroscope(signSelect.value);
+});
+
+// Theme buttons
+document.querySelectorAll(".themes button").forEach(btn => {
+  btn.style.background = btn.dataset.color;
+
+  btn.addEventListener("click", () => {
+    widget.style.background = btn.dataset.color;
+    localStorage.setItem("horoscopeTheme", btn.dataset.color);
+  });
+});
+
+// Load saved theme
+const savedTheme = localStorage.getItem("horoscopeTheme");
+if (savedTheme) widget.style.background = savedTheme;
+
+// Load initial horoscope
+loadHoroscope(signSelect.value);
+</script>
 
 </body>
 </html>
