@@ -29,10 +29,9 @@ async function loadHoroscope(sign = "aries") {
 
   localStorage.setItem("horoscopeSign", sign);
 
-  try {
-    const res = await fetch(`https://api.api-ninjas.com/v1/horoscope?sign=${sign}`, {
-      headers: { 'X-Api-Key': 'YOUR_API_KEY_HERE' }
-    });
+ curl -X GET "https://api.api-ninjas.com/v1/horoscope?sign=aries" \
+  -H "X-Api-Key: blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE"
+
 
     const data = await res.json();
 
