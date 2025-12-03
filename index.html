@@ -1,30 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Horoscope Widget</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>horoscope widget</title>
+
+<style>
+/* ========== BASE ========== */
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ========== WIDGET CARD ========== */
+#horoscope-widget {
+  width: 260px;
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--accent, #ffd6e0);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  color: #111;
+  transition: background 0.3s ease;
+}
+
+/* horoscope text */
+#horoscopeText {
+  font-size: 14px;
+  line-height: 1.45;
+  text-transform: lowercase;
+  margin-top: 4px;
+}
+
+#horoscopeText strong {
+  font-weight: 600;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* date label */
+#dateLabel {
+  font-size: 10px;
+  color: rgba(0,0,0,0.6);
+  margin-top: 12px;
+  text-align: right;
+  text-transform: lowercase;
+}
+
+/* ========== CONTROLS SECTION (outside card) ========== */
+.controls {
+  margin-top: 16px;
+  display: flex;
+  width: 260px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* dropdown */
+#signSelect {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  text-transform: lowercase;
+  background: #fff;
+}
+
+/* ========== THEME DOTS ========== */
+.themes {
+  display: flex;
+  gap: 6px;
+}
+
+.themes button {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.themes button:hover {
+  transform: scale(1.18);
+}
+</style>
 </head>
+
 <body>
-  <div class="widget">
-    <div class="top-accent" id="accent"></div>
 
-    <div class="row">
-      <select id="signSelect"></select>
-      <span id="dateLabel"></span>
-    </div>
+<!-- WIDGET -->
+<div id="horoscope-widget">
+  <div id="horoscopeText">loading…</div>
+  <div id="dateLabel"></div>
+</div>
 
-    <p id="horoscopeText">loading your stars…</p>
-  </div>
+<!-- CONTROLS -->
+<div class="controls">
+  <select id="signSelect">
+    <option value="aries">aries</option>
+    <option value="taurus">taurus</option>
+    <option value="gemini">gemini</option>
+    <option value="cancer">cancer</option>
+    <option value="leo">leo</option>
+    <option value="virgo">virgo</option>
+    <option value="libra">libra</option>
+    <option value="scorpio">scorpio</option>
+    <option value="sagittarius">sagittarius</option>
+    <option value="capricorn">capricorn</option>
+    <option value="aquarius">aquarius</option>
+    <option value="pisces">pisces</option>
+  </select>
 
   <div class="themes">
-    <button data-theme="#007aff"></button>
-    <button data-theme="#ff6b81"></button>
-    <button data-theme="#9b59b6"></button>
-    <button data-theme="#27ae60"></button>
+    <button data-color="#FFD6E0" style="background:#FFD6E0"></button>
+    <button data-color="#FDECC8" style="background:#FDECC8"></button>
+    <button data-color="#D8F5FF" style="background:#D8F5FF"></button>
+    <button data-color="#E8E8FF" style="background:#E8E8FF"></button>
+    <button data-color="#F7DFFF" style="background:#F7DFFF"></button>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
