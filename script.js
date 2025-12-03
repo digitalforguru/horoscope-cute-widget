@@ -22,7 +22,7 @@ signs.forEach(sign => {
 const savedSign = localStorage.getItem("horoscopeSign");
 if (savedSign) signSelect.value = savedSign;
 
-// load horoscope from API Ninjas
+// function to load horoscope
 async function loadHoroscope(sign = "aries") {
   horoscopeText.textContent = "checking the stars…";
   dateLabel.textContent = "";
@@ -31,15 +31,15 @@ async function loadHoroscope(sign = "aries") {
 
   try {
     const res = await fetch(`https://api.api-ninjas.com/v1/horoscope?sign=${sign}`, {
-      headers: { 'X-Api-Key': 'blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE' }
+      headers: { 'X-Api-Key': 'YOUR_API_KEY_HERE' }
     });
 
     const data = await res.json();
 
-    // API Ninjas returns: data.sign, data.horoscope, data.date
-    // Display them properly
-    horoscopeText.innerHTML = `<strong>${data.sign}</strong>: ${data.horoscope}`;
-    dateLabel.textContent = data.date; // show date returned by API
+    // API Ninjas only returns "horoscope"
+    // Display it with bold sign + local date
+    horoscopeText.innerHTML = `<strong>${sign}</strong>: ${data.horoscope}`;
+    dateLabel.textContent = new Date().toLocaleDateString();
 
   } catch (err) {
     console.error(err);
