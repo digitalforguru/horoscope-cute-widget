@@ -19,6 +19,8 @@
     border-radius: 22px;
     background: #FFD6E0;
     box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
     transition: background 0.3s ease;
   }
 
@@ -83,7 +85,7 @@
   }
 
   .zodiac-buttons.show {
-    max-height: 300px; /* enough to show all buttons */
+    max-height: 300px;
   }
 
   .zodiac-buttons button {
@@ -93,11 +95,12 @@
     padding: 6px 0;
     font-size: 14px;
     cursor: pointer;
-    transition: background .2s, transform .15s;
+    transition: background .2s, transform .15s, box-shadow .2s;
   }
 
   .zodiac-buttons button:hover {
     transform: scale(1.08);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
   .zodiac-buttons button.active {
@@ -110,6 +113,7 @@
     overflow: hidden;
     transition: max-height .35s ease;
     max-height: 300px;
+    position: relative;
   }
 
   #horoscopeText {
@@ -131,6 +135,21 @@
     text-align: right;
   }
 
+  /* mini magical area when collapsed */
+  #miniMagic {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+
+  #miniMagic span {
+    display: block;
+    margin: 2px 0;
+  }
+
   /* themes */
   .themes {
     margin-top: 16px;
@@ -145,11 +164,12 @@
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: transform .2s;
+    transition: transform .2s, box-shadow .2s;
   }
 
   .themes button:hover {
     transform: scale(1.2);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
 </style>
 </head>
@@ -189,6 +209,11 @@
   <div id="details">
     <div id="horoscopeText">loading…</div>
     <div id="dateLabel"></div>
+    <div id="miniMagic">
+      <span id="luckyNumber"></span>
+      <span id="birthstone"></span>
+      <span id="dailyQuote"></span>
+    </div>
   </div>
 
   <!-- themes -->
@@ -210,6 +235,10 @@ const headerSign = document.getElementById("headerSign");
 const leafBtn = document.getElementById("leafBtn");
 const zodiacButtons = document.getElementById("zodiacButtons");
 const zodiacBtns = document.querySelectorAll(".zodiac-buttons button");
+const miniMagic = document.getElementById("miniMagic");
+const luckyNumber = document.getElementById("luckyNumber");
+const birthstone = document.getElementById("birthstone");
+const dailyQuote = document.getElementById("dailyQuote");
 
 // ------------------- HOROSCOPE LOADING -------------------
 async function loadHoroscope(sign) {
@@ -237,30 +266,57 @@ async function loadHoroscope(sign) {
     text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
     dateLabel.textContent = new Date().toLocaleDateString();
 
+    // Generate mini magical info
+    generateMiniMagic(sign);
+
   } catch (err) {
     console.log(err);
     text.innerHTML = "couldn't load your horoscope ✨";
   }
 }
 
+// ------------------- MINI MAGIC -------------------
+const birthstones = {
+  aries: "Diamond 💎",
+  taurus: "Emerald 💚",
+  gemini: "Agate 🪨",
+  cancer: "Pearl 🐚",
+  leo: "Ruby ❤️",
+  virgo: "Sapphire 💙",
+  libra: "Opal 🌈",
+  scorpio: "Topaz 💛",
+  sagittarius: "Turquoise 💎",
+  capricorn: "Garnet ❤️",
+  aquarius: "Amethyst 💜",
+  pisces: "Aquamarine 💧"
+};
+
+const quotes = [
+  "Believe in magic ✨",
+  "Today is your day 🌿",
+  "Smile at the little things 🌸",
+  "The stars have your back ⭐️",
+  "Flow like a gentle river 🌊"
+];
+
+function generateMiniMagic(sign) {
+  luckyNumber.textContent = `Lucky Number: ${Math.floor(Math.random() * 99 + 1)}`;
+  birthstone.textContent = `Birthstone: ${birthstones[sign.toLowerCase()]}`;
+  dailyQuote.textContent = `Quote: ${quotes[Math.floor(Math.random()*quotes.length)]}`;
+}
+
 // ------------------- ZODIAC BUTTON LOGIC -------------------
 const savedSign = localStorage.getItem("horoscopeSign") || "aries";
-
-// Highlight saved button
 zodiacBtns.forEach(btn => {
   if (btn.dataset.sign === savedSign) btn.classList.add("active");
 });
-
-// Click interaction
 zodiacBtns.forEach(btn => {
   btn.addEventListener("click", () => {
     zodiacBtns.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-
     const sign = btn.dataset.sign;
     headerSign.textContent = sign;
     localStorage.setItem("horoscopeSign", sign);
-
     loadHoroscope(sign);
   });
 });
@@ -273,8 +329,6 @@ document.querySelectorAll(".themes button").forEach(btn => {
     localStorage.setItem("horoscopeTheme", btn.dataset.color);
   });
 });
-
-// Load saved theme
 const savedTheme = localStorage.getItem("horoscopeTheme");
 if (savedTheme) widget.style.background = savedTheme;
 
@@ -283,6 +337,7 @@ let open = true;
 toggleBtn.addEventListener("click", () => {
   open = !open;
   details.style.maxHeight = open ? "300px" : "0";
+  miniMagic.style.display = open ? "none" : "block";
   toggleBtn.textContent = open ? "⌄" : "›";
 });
 
