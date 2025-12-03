@@ -4,6 +4,22 @@ const signs = [
   "libra","scorpio","sagittarius","capricorn","aquarius","pisces"
 ];
 
+// API URLs for each sign
+const horoscopeURLs = {
+  aries: "https://api.api-ninjas.com/v1/horoscope?sign=aries",
+  taurus: "https://api.api-ninjas.com/v1/horoscope?sign=taurus",
+  gemini: "https://api.api-ninjas.com/v1/horoscope?sign=gemini",
+  cancer: "https://api.api-ninjas.com/v1/horoscope?sign=cancer",
+  leo: "https://api.api-ninjas.com/v1/horoscope?sign=leo",
+  virgo: "https://api.api-ninjas.com/v1/horoscope?sign=virgo",
+  libra: "https://api.api-ninjas.com/v1/horoscope?sign=libra",
+  scorpio: "https://api.api-ninjas.com/v1/horoscope?sign=scorpio",
+  sagittarius: "https://api.api-ninjas.com/v1/horoscope?sign=sagittarius",
+  capricorn: "https://api.api-ninjas.com/v1/horoscope?sign=capricorn",
+  aquarius: "https://api.api-ninjas.com/v1/horoscope?sign=aquarius",
+  pisces: "https://api.api-ninjas.com/v1/horoscope?sign=pisces"
+};
+
 // elements
 const signSelect = document.getElementById("signSelect");
 const horoscopeText = document.getElementById("horoscopeText");
@@ -22,21 +38,26 @@ signs.forEach(sign => {
 const savedSign = localStorage.getItem("horoscopeSign");
 if (savedSign) signSelect.value = savedSign;
 
-// function to load horoscope
+// load saved theme
+const savedTheme = localStorage.getItem("horoscopeTheme");
+if (savedTheme) accent.style.background = savedTheme;
+
+// function to load horoscope for a specific sign
 async function loadHoroscope(sign = "aries") {
   horoscopeText.textContent = "checking the stars…";
   dateLabel.textContent = "";
 
-  localStorage.setItem("horoscopeSign", sign);
+  try {
+    localStorage.setItem("horoscopeSign", sign);
 
- curl -X GET "https://api.api-ninjas.com/v1/horoscope?sign=aries" \
-  -H "X-Api-Key: blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE"
-
+    const res = await fetch(horoscopeURLs[sign], {
+      method: 'GET',
+      headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
+    });
 
     const data = await res.json();
 
-    // API Ninjas only returns "horoscope"
-    // Display it with bold sign + local date
+    // API Ninjas returns only "horoscope"
     horoscopeText.innerHTML = `<strong>${sign}</strong>: ${data.horoscope}`;
     dateLabel.textContent = new Date().toLocaleDateString();
 
@@ -52,18 +73,14 @@ document.querySelectorAll(".themes button").forEach(btn => {
   btn.addEventListener("click", () => {
     const color = btn.dataset.theme;
     accent.style.background = color;
-    localStorage.setItem("horoscopeTheme", color);
+    try { localStorage.setItem("horoscopeTheme", color); } catch(e) {}
   });
 });
-
-// load saved theme
-const savedTheme = localStorage.getItem("horoscopeTheme");
-if (savedTheme) accent.style.background = savedTheme;
 
 // initial load
 loadHoroscope(signSelect.value || "aries");
 
-// update on change
+// update on dropdown change
 signSelect.addEventListener("change", () => {
   loadHoroscope(signSelect.value);
 });
