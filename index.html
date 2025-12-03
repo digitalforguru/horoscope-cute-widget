@@ -182,12 +182,24 @@
     transform: scale(1.2);
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
+  .sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* so it doesn’t block clicks */
+  background: url('https://i.pinimg.com/originals/69/e2/7c/69e27c177766a3cb153b37682b22186c.gif') center/cover no-repeat;
+  opacity: 0.25; /* adjust sparkle intensity */
+  z-index: 1;
+}
 </style>
 </head>
 
 <body>
 
 <div class="widget" id="widget">
+  <div class="sparkles"></div>
   
   <!-- HEADER + toggle + leaf -->
   <div class="top">
