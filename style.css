@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  padding: 20px;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+  text-transform: lowercase;
+}
+
+.widget-container {
+  padding: 18px;
+  border-radius: 22px;
+  backdrop-filter: blur(25px);
+  background: rgba(255, 255, 255, 0.25);
+  width: 260px;
+  color: #000;
+}
+
+.top-accent {
+  width: 50%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent, #007aff);
+  margin: 0 auto 12px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+#signSelect {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  text-transform: lowercase;
+  outline: none;
+}
+
+#horoscopeText {
+  margin-top: 14px;
+  line-height: 1.35;
+  font-size: 14px;
+}
