@@ -42,15 +42,6 @@
     margin-bottom: 4px;
   }
 
-  #signSelect {
-    padding: 5px 9px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    background: white;
-    font-size: 12px;
-    text-transform: lowercase;
-  }
-
   .toggleBtn {
     background: none;
     border: none;
@@ -63,6 +54,40 @@
   .toggleBtn:hover {
     opacity: 1;
     transform: scale(1.15);
+  }
+
+  /* zodiac buttons dropdown */
+  .zodiac-buttons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    margin-top: 8px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .zodiac-buttons.show {
+    max-height: 300px; /* enough to show all buttons */
+  }
+
+  .zodiac-buttons button {
+    background: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+
+  .zodiac-buttons button:hover {
+    transform: scale(1.08);
+  }
+
+  .zodiac-buttons button.active {
+    background: rgba(0,0,0,0.15); 
+    font-weight: 600;
   }
 
   /* details */
@@ -111,31 +136,6 @@
   .themes button:hover {
     transform: scale(1.2);
   }
-  .zodiac-buttons {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.zodiac-buttons button {
-  background: white;
-  border: none;
-  border-radius: 12px;
-  padding: 6px 0;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background .2s, transform .15s;
-}
-
-.zodiac-buttons button:hover {
-  transform: scale(1.08);
-}
-
-.zodiac-buttons button.active {
-  background: rgba(0,0,0,0.15); 
-  font-weight: 600;
-}
 </style>
 </head>
 
@@ -143,29 +143,30 @@
 
 <div class="widget" id="widget">
   
-  <!-- HEADER + sign selector -->
+  <!-- HEADER + toggle -->
   <div class="top">
     <div class="signWrap">
       <strong id="headerSign">aries</strong>
     </div>
-
     <button class="toggleBtn" id="toggleBtn">⌄</button>
   </div>
   
-<div class="zodiac-buttons">
-  <button data-sign="aries">♈︎</button>
-  <button data-sign="taurus">♉︎</button>
-  <button data-sign="gemini">♊︎</button>
-  <button data-sign="cancer">♋︎</button>
-  <button data-sign="leo">♌︎</button>
-  <button data-sign="virgo">♍︎</button>
-  <button data-sign="libra">♎︎</button>
-  <button data-sign="scorpio">♏︎</button>
-  <button data-sign="sagittarius">♐︎</button>
-  <button data-sign="capricorn">♑︎</button>
-  <button data-sign="aquarius">♒︎</button>
-  <button data-sign="pisces">♓︎</button>
-</div>
+  <!-- zodiac buttons dropdown -->
+  <div class="zodiac-buttons" id="zodiacButtons">
+    <button data-sign="aries">♈︎</button>
+    <button data-sign="taurus">♉︎</button>
+    <button data-sign="gemini">♊︎</button>
+    <button data-sign="cancer">♋︎</button>
+    <button data-sign="leo">♌︎</button>
+    <button data-sign="virgo">♍︎</button>
+    <button data-sign="libra">♎︎</button>
+    <button data-sign="scorpio">♏︎</button>
+    <button data-sign="sagittarius">♐︎</button>
+    <button data-sign="capricorn">♑︎</button>
+    <button data-sign="aquarius">♒︎</button>
+    <button data-sign="pisces">♓︎</button>
+  </div>
+
   <!-- details -->
   <div id="details">
     <div id="horoscopeText">loading…</div>
@@ -183,19 +184,57 @@
 </div>
 
 <script>
-// zodiac buttons
-const zodiacBtns = document.querySelectorAll(".zodiac-buttons button");
+// ELEMENTS
+const widget = document.getElementById("widget");
+const details = document.getElementById("details");
+const toggleBtn = document.getElementById("toggleBtn");
 const headerSign = document.getElementById("headerSign");
+const zodiacButtons = document.getElementById("zodiacButtons");
+const zodiacBtns = document.querySelectorAll(".zodiac-buttons button");
 
-// load saved sign
+// ------------------- HOROSCOPE LOADING -------------------
+async function loadHoroscope(sign) {
+  const text = document.getElementById("horoscopeText");
+  const dateLabel = document.getElementById("dateLabel");
+
+  text.innerHTML = "checking the stars…";
+  headerSign.textContent = sign.toLowerCase();
+
+  try {
+    const res = await fetch(
+      `https://api.api-ninjas.com/v1/horoscope?zodiac=${sign}`,
+      {
+        headers: { "X-Api-Key": "blbTUv2CVt9YgApgn2mioA==nKrg5ySEuPnb5cPE" }
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.horoscope) {
+      text.innerHTML = "no stars today ✨";
+      return;
+    }
+
+    text.innerHTML = `<strong>${sign}</strong>${data.horoscope}`;
+    dateLabel.textContent = new Date().toLocaleDateString();
+
+  } catch (err) {
+    console.log(err);
+    text.innerHTML = "couldn't load your horoscope ✨";
+  }
+}
+
+// ------------------- ZODIAC BUTTON LOGIC -------------------
+
+// Load saved sign
 const savedSign = localStorage.getItem("horoscopeSign") || "aries";
 
-// highlight saved button
+// Highlight saved button
 zodiacBtns.forEach(btn => {
   if (btn.dataset.sign === savedSign) btn.classList.add("active");
 });
 
-// click interaction
+// Click interaction
 zodiacBtns.forEach(btn => {
   btn.addEventListener("click", () => {
     zodiacBtns.forEach(b => b.classList.remove("active"));
@@ -209,7 +248,35 @@ zodiacBtns.forEach(btn => {
   });
 });
 
-// initial load
+// ------------------- THEME BUTTONS -------------------
+document.querySelectorAll(".themes button").forEach(btn => {
+  btn.style.background = btn.dataset.color;
+  btn.addEventListener("click", () => {
+    widget.style.background = btn.dataset.color;
+    localStorage.setItem("horoscopeTheme", btn.dataset.color);
+  });
+});
+
+// Load saved theme
+const savedTheme = localStorage.getItem("horoscopeTheme");
+if (savedTheme) widget.style.background = savedTheme;
+
+// ------------------- DETAILS TOGGLE -------------------
+let open = true;
+toggleBtn.addEventListener("click", () => {
+  open = !open;
+  details.style.maxHeight = open ? "300px" : "0";
+  toggleBtn.textContent = open ? "⌄" : "›";
+});
+
+// ------------------- ZODIAC DROPDOWN TOGGLE -------------------
+let zodiacOpen = false;
+headerSign.addEventListener("click", () => {
+  zodiacOpen = !zodiacOpen;
+  zodiacButtons.classList.toggle("show", zodiacOpen);
+});
+
+// ------------------- INITIAL LOAD -------------------
 headerSign.textContent = savedSign;
 loadHoroscope(savedSign);
 </script>
