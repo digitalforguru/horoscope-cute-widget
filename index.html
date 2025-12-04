@@ -313,19 +313,33 @@ async function loadHoroscope(sign) {
 }
 
 // ------------------- MINI MAGIC -------------------
+  const traits = {
+  aries: "exciting, fast-paced, and competitive individual",
+  taurus: "luxurious, sensual, and appreciative individual",
+  gemini: "mentally captivating, humorous, and a fun to be around individual",
+  cancer: "nurturing, sentimental, and cozy individual",
+  leo: "expressive, dramatic, and confident individual",
+  virgo: "practical, elegant, and detail-oriented individual",
+  libra: "social, charming, and loyal individual",
+  scorpio: "intense, deep, and insightful individual",
+  sagittarius: "adventurous, optimistic, and goal-oriented individual",
+  capricorn: "grounded, sophisticated, and determined individual",
+  aquarius: "unique, intellectual, and unconventional individual",
+  pisces: "dreamy, empathetic, and indulgent individual"
+};
 const birthstones = {
-  aries: { name: "diamond", color: "#b9f2ff" },
-  taurus: { name: "emerald", color: "#50c878" },
-  gemini: { name: "agate", color: "#f08080" },
-  cancer: { name: "pearl", color: "#fefae0" },
-  leo: { name: "ruby", color: "#e0115f" },
-  virgo: { name: "sapphire", color: "#0f52ba" },
+  aries: { name: "diamond", color: "#eafafd" },
+  taurus: { name: "emerald", color: "#00674f" },
+  gemini: { name: "pearl", color: "#eae0c8" },
+  cancer: { name: "ruby", color: "#9b111e" },
+  leo: { name: "peridot", color: "#76f28f" },
+  virgo: { name: "sapphire", color: "#151667" },
   libra: { name: "opal", color: "#a8c3bc" },
   scorpio: { name: "topaz", color: "#ffc87c" },
-  sagittarius: { name: "turquoise", color: "#40e0d0" },
-  capricorn: { name: "garnet", color: "#733635" },
+  sagittarius: { name: "tanzanite", color: "#3b4b7f" },
+  capricorn: { name: "garnet", color: "#830e0d" },
   aquarius: { name: "amethyst", color: "#9966cc" },
-  pisces: { name: "aquamarine", color: "#7fffd4" }
+  pisces: { name: "aquamarine", color: "#71d9e2" }
 };
   
 const quotes = [
@@ -337,7 +351,7 @@ const quotes = [
 ];
 
 function generateMiniMagic(sign) {
-  luckyNumber.textContent = `number of the day: ${Math.floor(Math.random() * 99 + 1)}`;
+  luckyNumber.textContent = traits[sign.toLowerCase()];
 
   const stone = birthstones[sign.toLowerCase()];
   birthstone.innerHTML = `birthstone: <span style="
@@ -350,7 +364,7 @@ function generateMiniMagic(sign) {
     vertical-align:middle;
   "></span>${stone.name}`;
 
-  dailyQuote.textContent = `quote: ${quotes[Math.floor(Math.random() * quotes.length)]}`;
+  dailyQuote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
 }
 
 // ------------------- ZODIAC BUTTON LOGIC -------------------
