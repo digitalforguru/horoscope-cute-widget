@@ -13,26 +13,15 @@
     background: transparent;
   }
 
-  /* ----------------- CONTAINER FOR RESIZING ----------------- */
-  .widget-container {
-    width: 100%;
-    max-width: 300px;       /* optional max width */
-    aspect-ratio: 1 / 1.3;  /* lock height proportional to width */
-    resize: both;            /* allow corner resizing */
-    overflow: auto;
-  }
-
   .widget {
-    width: 100%;
-    height: 100%;
-    padding: 22px;
-    border-radius: 22px;
-    background: #ffd6e0;
-    box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s ease;
-  }
+  width: 260px;          /* keeps original width */
+  height: auto;          /* lets height adjust automatically */
+  aspect-ratio: auto 260 / 400; /* lock proportion (replace 400 with your widget's height) */
+  resize: both;          /* allows user to resize from corner */
+  overflow: hidden;      /* prevents scrollbars */
+  max-width: 100%;       /* so it fits nicely in Notion columns */
+  min-width: 200px;      /* optional: prevents shrinking too much */
+}
 
   .sparkles {
     position: absolute;
@@ -141,9 +130,6 @@
     max-height: 300px;
     position: relative;
     z-index: 2;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.3); /* subtle divider */
-    margin-top: 6px;
   }
 
   #horoscopeText {
@@ -183,20 +169,16 @@
     z-index: 2;
     position: relative;
     text-transform: lowercase;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.3); /* subtle divider */
-    margin-top: 6px;
   }
 
   #miniMagic span {
     display: block;
     margin: 2px 0;
   }
-
   #dailyQuote em {
-    font-style: italic;
-    opacity: 0.9;
-  }
+  font-style: italic;
+  opacity: 0.9;
+}
 
   @keyframes sparkle {
     0% { box-shadow: 0 4px 8px rgba(255,255,255,0.2); }
@@ -212,9 +194,6 @@
     justify-content: center;
     z-index: 2;
     position: relative;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.3); /* subtle divider */
-    margin-top: 6px;
   }
 
   .themes button {
@@ -235,59 +214,57 @@
 
 <body>
 
-<!-- WRAP WIDGET IN CONTAINER FOR RESIZING -->
-<div class="widget-container">
-  <div class="widget" id="widget">
-    <div class="sparkles"></div>
-    
-    <!-- HEADER + toggle + leaf -->
-    <div class="top">
-      <div class="signWrap">
-        <strong id="headerSign">aries</strong>
-      </div>
-      <div style="display:flex; align-items:center;">
-        <button class="leafBtn" id="leafBtn">˙⋆✮</button>
-        <button class="toggleBtn" id="toggleBtn">⌄</button>
-      </div>
+<div class="widget" id="widget">
+  <div class="sparkles"></div>
+  
+  <!-- HEADER + toggle + leaf -->
+  <div class="top">
+    <div class="signWrap">
+      <strong id="headerSign">aries</strong>
     </div>
-    
-    <!-- zodiac buttons dropdown -->
-    <div class="zodiac-buttons" id="zodiacButtons">
-      <button data-sign="aries">♈︎</button>
-      <button data-sign="taurus">♉︎</button>
-      <button data-sign="gemini">♊︎</button>
-      <button data-sign="cancer">♋︎</button>
-      <button data-sign="leo">♌︎</button>
-      <button data-sign="virgo">♍︎</button>
-      <button data-sign="libra">♎︎</button>
-      <button data-sign="scorpio">♏︎</button>
-      <button data-sign="sagittarius">♐︎</button>
-      <button data-sign="capricorn">♑︎</button>
-      <button data-sign="aquarius">♒︎</button>
-      <button data-sign="pisces">♓︎</button>
-    </div>
-
-    <!-- details -->
-    <div id="details">
-      <div id="horoscopeText">loading…</div>
-      <div id="dateLabel"></div>
-    </div>
-
-    <!-- mini magic -->
-    <div id="miniMagic">
-      <span id="luckyNumber"></span>
-      <span id="birthstone"></span>
-      <span id="dailyQuote"></span>
-    </div>
-
-    <!-- themes -->
-    <div class="themes">
-      <button data-color="#FFD6E0"></button>
-      <button data-color="#D6E8FF"></button>
-      <button data-color="#E7FFD6"></button>
-      <button data-color="#FFEAD6"></button>
+    <div style="display:flex; align-items:center;">
+      <button class="leafBtn" id="leafBtn">˙⋆✮</button>
+      <button class="toggleBtn" id="toggleBtn">⌄</button>
     </div>
   </div>
+  
+  <!-- zodiac buttons dropdown -->
+  <div class="zodiac-buttons" id="zodiacButtons">
+    <button data-sign="aries">♈︎</button>
+    <button data-sign="taurus">♉︎</button>
+    <button data-sign="gemini">♊︎</button>
+    <button data-sign="cancer">♋︎</button>
+    <button data-sign="leo">♌︎</button>
+    <button data-sign="virgo">♍︎</button>
+    <button data-sign="libra">♎︎</button>
+    <button data-sign="scorpio">♏︎</button>
+    <button data-sign="sagittarius">♐︎</button>
+    <button data-sign="capricorn">♑︎</button>
+    <button data-sign="aquarius">♒︎</button>
+    <button data-sign="pisces">♓︎</button>
+  </div>
+
+  <!-- details -->
+  <div id="details">
+    <div id="horoscopeText">loading…</div>
+    <div id="dateLabel"></div>
+  </div>
+
+  <!-- mini magic -->
+  <div id="miniMagic">
+    <span id="luckyNumber"></span>
+    <span id="birthstone"></span>
+    <span id="dailyQuote"></span>
+  </div>
+
+  <!-- themes -->
+  <div class="themes">
+    <button data-color="#FFD6E0"></button>
+    <button data-color="#D6E8FF"></button>
+    <button data-color="#E7FFD6"></button>
+    <button data-color="#FFEAD6"></button>
+  </div>
+
 </div>
 
 <script>
@@ -339,7 +316,7 @@ async function loadHoroscope(sign) {
 }
 
 // ------------------- MINI MAGIC -------------------
-const traits = {
+  const traits = {
   aries: "exciting, fast-paced, and competitive individual",
   taurus: "luxurious, sensual, and appreciative individual",
   gemini: "mentally captivating, humorous, and a fun to be around individual",
