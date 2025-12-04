@@ -12,7 +12,17 @@
     padding: 40px;
     background: transparent;
   }
+.widget-wrapper {
+  display: inline-block;
+  transform-origin: top left; /* scale from top-left corner */
+  width: 100%; /* container width controlled by Notion */
+  height: auto;
+}
 
+/* Scale the widget down proportionally */
+.widget-wrapper {
+  transform: scale(0.8); /* 0.8 = 80% size, adjust as needed */
+}
     .widget {
     width: 260px;
     padding: 22px;
@@ -215,7 +225,8 @@
 
 <body>
 
-<div class="widget" id="widget">
+<div class="widget-wrapper">
+  <div class="widget" id="widget">
   <div class="sparkles"></div>
   
   <!-- HEADER + toggle + leaf -->
