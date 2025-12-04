@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Horoscope Widget</title>
+<title>digtitalguru's Notion horoscope</title>
 
 <style>
   body {
@@ -176,6 +176,10 @@
     display: block;
     margin: 2px 0;
   }
+  #dailyQuote em {
+  font-style: italic;
+  opacity: 0.9;
+}
 
   @keyframes sparkle {
     0% { box-shadow: 0 4px 8px rgba(255,255,255,0.2); }
@@ -343,11 +347,26 @@ const birthstones = {
 };
   
 const quotes = [
-  "believe in magic ✨",
-  "today is your day 🌿",
-  "smile at the little things 🌸",
-  "the stars have your back ⭐️",
-  "flow like a gentle river 🌊"
+ •	“trust the timing. ‧₊˚ ☽ ⋅”
+	•	“let it unfold. ‧₊”
+	•	“quietly becoming. ☕︎”
+	•	“aligned, not rushed. ⩇⩇:⩇⩇”
+	•	“you’re allowed to start again. ✶”
+	•	“what’s meant for you won’t hide. ✈︎”
+	•	“grow at your own pace. ☾☀︎”
+	•	“take up gentle space. ˎˊ˗”
+	•	“listen to your own rhythm. ♬⋆.˚”
+	•	“soft steps still move forward. ✧˖°.”
+	•	“patience is power. ◡̈”
+	•	“you’re getting closer. ˗ˏˋ ★ ˎˊ˗”
+	•	“stay open to good things. ༄”
+	•	“your path is shaping itself. ⋆⭒˚.⋆”
+	•	“small shifts change everything. ☾☀︎”
+	•	“breathe, you’re okay. ༄”
+	•	“some days are seeds. ✶”
+	•	“trust your quiet confidence. ◡̈”
+	•	“you’re allowed to be new. ˗ˏˋ ★ ˎˊ˗”
+	•	“you’re allowed to be gentle. ✧˖°”
 ];
 
 function generateMiniMagic(sign) {
@@ -364,7 +383,7 @@ function generateMiniMagic(sign) {
     vertical-align:middle;
   "></span>${stone.name}`;
 
-  dailyQuote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+  dailyQuote.innerHTML = `<em>${quotes[Math.floor(Math.random() * quotes.length)]}</em>`;
 }
 
 // ------------------- ZODIAC BUTTON LOGIC -------------------
