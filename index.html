@@ -13,15 +13,16 @@
     background: transparent;
   }
 
-  .widget {
-  width: 260px;          /* keeps original width */
-  height: auto;          /* lets height adjust automatically */
-  aspect-ratio: auto 260 / 400; /* lock proportion (replace 400 with your widget's height) */
-  resize: both;          /* allows user to resize from corner */
-  overflow: hidden;      /* prevents scrollbars */
-  max-width: 100%;       /* so it fits nicely in Notion columns */
-  min-width: 200px;      /* optional: prevents shrinking too much */
-}
+    .widget {
+    width: 260px;
+    padding: 22px;
+    border-radius: 22px;
+    background: #ffd6e0;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
 
   .sparkles {
     position: absolute;
